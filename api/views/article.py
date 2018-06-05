@@ -7,7 +7,7 @@ from api.serializer.course import *
 from api.serializer.article import *
 from rest_framework.response import Response
 from rest_framework.versioning import URLPathVersioning
-
+from django.db.models import F
 
 
 class ArticleModelView(viewsets.ModelViewSet):
@@ -43,3 +43,10 @@ class ArticleModelView(viewsets.ModelViewSet):
             ret['error'] = '获取数据失败'
 
         return Response(ret)
+    def create(self,request,*args,**kwargs):
+        # post请求 预留端口后端添加文章使用
+        pass
+    def update(self,request,*args,**kwargs):
+        article_id = kwargs.get("pk")
+        Article.objects.filter(pk=article_id).upodate(agree_num=F("argee_num")+1)
+        
